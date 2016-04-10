@@ -3,5 +3,5 @@ HorizontalCoverTransitionModalNavigationController is an UINavigationController 
 
 <p align="left">
 
-<img src="./ScreenShoots/1.gif" width=80%"> 
+<img src="./ScreenShoots/1.gif" width=375px height=667"> 
 </p>
