@@ -101,7 +101,7 @@ public final class HorizontalCoverTransitionModalNavigationController: UINavigat
             } else if state == .Ended {
                 paning = false
                 
-                if percentComplete > 0.5 {
+                if percentComplete > 0.5 || sender.velocityInView(view).x > 0 {
                     interactiveTransition?.finishInteractiveTransition()
                 } else {
                     interactiveTransition?.cancelInteractiveTransition()
