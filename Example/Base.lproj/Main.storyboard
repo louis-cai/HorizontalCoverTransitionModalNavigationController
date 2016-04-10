@@ -58,6 +58,10 @@
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <gestureRecognizers/>
+                        <connections>
+                            <outletCollection property="gestureRecognizers" destination="Li7-I1-kZe" appends="YES" id="iEU-fS-A9H"/>
+                        </connections>
                     </view>
                     <navigationItem key="navigationItem" id="TTa-JE-qdW">
                         <barButtonItem key="leftBarButtonItem" systemItem="cancel" id="hb1-Vh-LNE">
@@ -68,6 +72,11 @@
                     </navigationItem>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="acK-cW-0YZ" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <tapGestureRecognizer id="Li7-I1-kZe">
+                    <connections>
+                        <segue destination="fQW-VR-B5K" kind="show" id="Bsv-Xr-lvH"/>
+                    </connections>
+                </tapGestureRecognizer>
             </objects>
             <point key="canvasLocation" x="1227" y="321"/>
         </scene>
@@ -121,12 +130,43 @@
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <gestureRecognizers/>
+                        <connections>
+                            <outletCollection property="gestureRecognizers" destination="oFq-To-fn4" appends="YES" id="SRL-bE-vwv"/>
+                        </connections>
                     </view>
                     <navigationItem key="navigationItem" id="IhF-SW-sdn"/>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="6RE-C0-b3F" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <tapGestureRecognizer id="oFq-To-fn4">
+                    <connections>
+                        <segue destination="fQW-VR-B5K" kind="show" id="x30-x1-AM6"/>
+                    </connections>
+                </tapGestureRecognizer>
             </objects>
-            <point key="canvasLocation" x="1227" y="946"/>
+            <point key="canvasLocation" x="1269" y="967"/>
+        </scene>
+        <!--View Controller-->
+        <scene sceneID="vbN-GE-jy9">
+            <objects>
+                <viewController id="fQW-VR-B5K" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="rmb-iw-hNq"/>
+                        <viewControllerLayoutGuide type="bottom" id="wrP-Py-Bvh"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="Dhf-PA-JLV">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    </view>
+                    <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina4"/>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="grC-Q2-dlG" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1821" y="712"/>
         </scene>
     </scenes>
+    <inferredMetricsTieBreakers>
+        <segue reference="Bsv-Xr-lvH"/>
+    </inferredMetricsTieBreakers>
 </document>

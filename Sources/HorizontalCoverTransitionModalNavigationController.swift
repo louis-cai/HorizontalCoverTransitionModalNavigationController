@@ -63,8 +63,8 @@ public final class HorizontalCoverTransitionModalNavigationController: UINavigat
         transitioningDelegate = self
     }
     
-    public override func viewDidAppear(animated: Bool) {
-        super.viewDidAppear(animated)
+    public override func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(animated)
         
         if let rootViewController = viewControllers.first {
             var leftBarButtonItem: UIBarButtonItem!
@@ -133,7 +133,7 @@ extension HorizontalCoverTransitionModalNavigationController: UIViewControllerTr
 
 public final class PresentAnimator: NSObject, UIViewControllerAnimatedTransitioning {
     public func transitionDuration(transitionContext: UIViewControllerContextTransitioning?) -> NSTimeInterval {
-        return 0.25
+        return 0.3
     }
     
     public func animateTransition(transitionContext: UIViewControllerContextTransitioning) {
@@ -168,7 +168,7 @@ public final class PresentAnimator: NSObject, UIViewControllerAnimatedTransition
 
 public final class DismissAnimator: NSObject, UIViewControllerAnimatedTransitioning {
     public func transitionDuration(transitionContext: UIViewControllerContextTransitioning?) -> NSTimeInterval {
-        return 0.25
+        return 0.3
     }
     
     public func animateTransition(transitionContext: UIViewControllerContextTransitioning) {
@@ -204,7 +204,7 @@ private extension UIView {
     private func setLeftEdgeShadow() {
         let path = UIBezierPath(rect: bounds)
         layer.shadowPath = path.CGPath
-        layer.shadowOffset = CGSizeMake(-4.0, 0.0)
+        layer.shadowOffset = CGSizeMake(-4.0, 64)
         layer.shadowColor = UIColor.grayColor().CGColor
         layer.shadowRadius = 4.0
         layer.shadowOpacity = 0.4

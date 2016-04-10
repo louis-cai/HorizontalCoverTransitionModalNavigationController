@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name = "HorizontalCoverTransitionModalNavigationController"
-  s.version = "0.1.1"
+  s.version = "0.1.2"
   s.license = "MIT"
   s.summary = "Turns present and dismiss UINavigationController stack like push and pop."
   s.homepage = "https://github.com/cuzv/HorizontalCoverTransitionModalNavigationController"
