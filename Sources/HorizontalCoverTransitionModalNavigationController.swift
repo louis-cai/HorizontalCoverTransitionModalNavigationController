@@ -204,7 +204,7 @@ private extension UIView {
     private func setLeftEdgeShadow() {
         let path = UIBezierPath(rect: bounds)
         layer.shadowPath = path.CGPath
-        layer.shadowOffset = CGSizeMake(-4.0, 64)
+        layer.shadowOffset = CGSizeMake(-4.0, 68)
         layer.shadowColor = UIColor.grayColor().CGColor
         layer.shadowRadius = 4.0
         layer.shadowOpacity = 0.4
