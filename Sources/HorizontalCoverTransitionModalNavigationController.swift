@@ -44,12 +44,12 @@ public final class HorizontalCoverTransitionModalNavigationController: UINavigat
         return panGestureRecognizer
     }()
     
-    override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: NSBundle?) {
+    override public init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: NSBundle?) {
         super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
         setup()
     }
     
-    override init(rootViewController: UIViewController) {
+    override public init(rootViewController: UIViewController) {
         super.init(rootViewController: rootViewController)
         setup()
     }
@@ -63,7 +63,7 @@ public final class HorizontalCoverTransitionModalNavigationController: UINavigat
         transitioningDelegate = self
     }
     
-    public override func viewWillAppear(animated: Bool) {
+    override public func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
         
         if let rootViewController = viewControllers.first {
