@@ -137,9 +137,6 @@ public final class PresentAnimator: NSObject, UIViewControllerAnimatedTransition
     }
     
     public func animateTransition(transitionContext: UIViewControllerContextTransitioning) {
-        guard let container = transitionContext.containerView() else {
-            return transitionContext.completeTransition(false)
-        }
         guard let to = transitionContext.viewControllerForKey(UITransitionContextToViewControllerKey) else {
             return transitionContext.completeTransition(false)
         }
@@ -149,6 +146,7 @@ public final class PresentAnimator: NSObject, UIViewControllerAnimatedTransition
         
         to.view.setLeftEdgeShadow()
         
+        let container = transitionContext.containerView()
         let finalFrame = transitionContext.finalFrameForViewController(to)
         to.view.frame = finalFrame
         container.addSubview(to.view)
@@ -172,9 +170,6 @@ public final class DismissAnimator: NSObject, UIViewControllerAnimatedTransition
     }
     
     public func animateTransition(transitionContext: UIViewControllerContextTransitioning) {
-        guard let container = transitionContext.containerView() else {
-            return transitionContext.completeTransition(false)
-        }
         guard let to = transitionContext.viewControllerForKey(UITransitionContextToViewControllerKey) else {
             return transitionContext.completeTransition(false)
         }
@@ -182,6 +177,7 @@ public final class DismissAnimator: NSObject, UIViewControllerAnimatedTransition
             return transitionContext.completeTransition(false)
         }
         
+        let container = transitionContext.containerView()
         let finalFrame = transitionContext.finalFrameForViewController(to)
         to.view.frame = finalFrame
         container.addSubview(to.view)
