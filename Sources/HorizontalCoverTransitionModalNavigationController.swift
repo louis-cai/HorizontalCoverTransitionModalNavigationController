@@ -36,15 +36,15 @@ public final class HorizontalCoverTransitionModalNavigationController: UINavigat
     /// Privode your preferred dismissal item image, default is a `.Cancel` style UIBarButtonItem.
     public var preferredDismissBarButtonItemImage: UIImage?
     
-    private var interactiveTransition: UIPercentDrivenInteractiveTransition?
-    private lazy var panGestureRecognizer: UIPanGestureRecognizer = {
+    fileprivate var interactiveTransition: UIPercentDrivenInteractiveTransition?
+    fileprivate lazy var panGestureRecognizer: UIPanGestureRecognizer = {
         let panGestureRecognizer = UIScreenEdgePanGestureRecognizer(target: self, action: #selector(handlePanAction(_:)))
-        panGestureRecognizer.edges = .Left
+        panGestureRecognizer.edges = .left
         panGestureRecognizer.delegate = self
         return panGestureRecognizer
     }()
     
-    override public init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: NSBundle?) {
+    override public init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
         super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
         setup()
     }
@@ -59,21 +59,21 @@ public final class HorizontalCoverTransitionModalNavigationController: UINavigat
         setup()
     }
     
-    private func setup() {
+    fileprivate func setup() {
         transitioningDelegate = self
     }
     
-    override public func viewWillAppear(animated: Bool) {
+    override public func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
         if let rootViewController = viewControllers.first {
             var leftBarButtonItem: UIBarButtonItem!
             if let preferredDismissBarButtonItemTitle = preferredDismissBarButtonItemTitle {
-                leftBarButtonItem = UIBarButtonItem(title: preferredDismissBarButtonItemTitle, style: .Plain, target: self, action: #selector(back))
+                leftBarButtonItem = UIBarButtonItem(title: preferredDismissBarButtonItemTitle, style: .plain, target: self, action: #selector(back))
             } else if let preferredDismissBarButtonItemImage = preferredDismissBarButtonItemImage {
-                leftBarButtonItem = UIBarButtonItem(image: preferredDismissBarButtonItemImage, style: .Plain, target: self, action: #selector(back))
+                leftBarButtonItem = UIBarButtonItem(image: preferredDismissBarButtonItemImage, style: .plain, target: self, action: #selector(back))
             } else {
-                leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .Cancel, target: self, action: #selector(back))
+                leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .cancel, target: self, action: #selector(back))
             }
             rootViewController.navigationItem.leftBarButtonItem = leftBarButtonItem
             
@@ -82,29 +82,29 @@ public final class HorizontalCoverTransitionModalNavigationController: UINavigat
     }
     
     dynamic internal func back() {
-        presentingViewController?.dismissViewControllerAnimated(true, completion: nil)
+        presentingViewController?.dismiss(animated: true, completion: nil)
     }
     
-    internal func handlePanAction(sender: UIPanGestureRecognizer) {
+    internal func handlePanAction(_ sender: UIPanGestureRecognizer) {
         let state = sender.state
-        if state == .Began {
+        if state == .began {
             paning = true
-            if sender.velocityInView(view).x > 0 {
+            if sender.velocity(in: view).x > 0 {
                 interactiveTransition = UIPercentDrivenInteractiveTransition()
                 back()
             }
         } else {
-            let percentComplete = fabs(sender.translationInView(view).x / CGRectGetWidth(view.bounds))
+            let percentComplete = fabs(sender.translation(in: view).x / view.bounds.width)
             
-            if state == .Changed {
-                interactiveTransition?.updateInteractiveTransition(percentComplete)
-            } else if state == .Ended {
+            if state == .changed {
+                interactiveTransition?.update(percentComplete)
+            } else if state == .ended {
                 paning = false
                 
-                if percentComplete > 0.5 || sender.velocityInView(view).x > 0 {
-                    interactiveTransition?.finishInteractiveTransition()
+                if percentComplete > 0.5 || sender.velocity(in: view).x > 0 {
+                    interactiveTransition?.finish()
                 } else {
-                    interactiveTransition?.cancelInteractiveTransition()
+                    interactiveTransition?.cancel()
                 }
                 
                 interactiveTransition = nil
@@ -116,15 +116,15 @@ public final class HorizontalCoverTransitionModalNavigationController: UINavigat
 // MARK: - UIViewControllerTransitioningDelegate
 
 extension HorizontalCoverTransitionModalNavigationController: UIViewControllerTransitioningDelegate {
-    public func animationControllerForPresentedController(presented: UIViewController, presentingController presenting: UIViewController, sourceController source: UIViewController) -> UIViewControllerAnimatedTransitioning? {
+    public func animationController(forPresented presented: UIViewController, presenting: UIViewController, source: UIViewController) -> UIViewControllerAnimatedTransitioning? {
         return PresentAnimator()
     }
     
-    public func animationControllerForDismissedController(dismissed: UIViewController) -> UIViewControllerAnimatedTransitioning? {
+    public func animationController(forDismissed dismissed: UIViewController) -> UIViewControllerAnimatedTransitioning? {
         return DismissAnimator()
     }
     
-    public func interactionControllerForDismissal(animator: UIViewControllerAnimatedTransitioning) -> UIViewControllerInteractiveTransitioning? {
+    public func interactionControllerForDismissal(using animator: UIViewControllerAnimatedTransitioning) -> UIViewControllerInteractiveTransitioning? {
         return interactiveTransition
     }
 }
@@ -132,76 +132,76 @@ extension HorizontalCoverTransitionModalNavigationController: UIViewControllerTr
 // MARK: - UIViewControllerAnimatedTransitioning
 
 public final class PresentAnimator: NSObject, UIViewControllerAnimatedTransitioning {
-    public func transitionDuration(transitionContext: UIViewControllerContextTransitioning?) -> NSTimeInterval {
+    public func transitionDuration(using transitionContext: UIViewControllerContextTransitioning?) -> TimeInterval {
         return 0.3
     }
     
-    public func animateTransition(transitionContext: UIViewControllerContextTransitioning) {
-        guard let to = transitionContext.viewControllerForKey(UITransitionContextToViewControllerKey) else {
+    public func animateTransition(using transitionContext: UIViewControllerContextTransitioning) {
+        guard let to = transitionContext.viewController(forKey: UITransitionContextViewControllerKey.to) else {
             return transitionContext.completeTransition(false)
         }
-        guard let from = transitionContext.viewControllerForKey(UITransitionContextFromViewControllerKey) else {
+        guard let from = transitionContext.viewController(forKey: UITransitionContextViewControllerKey.from) else {
             return transitionContext.completeTransition(false)
         }
         
         to.view.setLeftEdgeShadow()
         
-        let container = transitionContext.containerView()
-        let finalFrame = transitionContext.finalFrameForViewController(to)
+        let container = transitionContext.containerView
+        let finalFrame = transitionContext.finalFrame(for: to)
         to.view.frame = finalFrame
         container.addSubview(to.view)
         
-        to.view.transform = CGAffineTransformMakeTranslation(CGRectGetWidth(to.view.bounds), 0)
-        UIView.animateWithDuration(transitionDuration(transitionContext), delay: 0, options: paning ? .CurveLinear : .CurveEaseInOut, animations: {
-            to.view.transform = CGAffineTransformIdentity
-            from.view.transform = CGAffineTransformMakeTranslation(-ceil(CGRectGetWidth(from.view.bounds) * 0.3), 0)
+        to.view.transform = CGAffineTransform(translationX: to.view.bounds.width, y: 0)
+        UIView.animate(withDuration: transitionDuration(using: transitionContext), delay: 0, options: paning ? .curveLinear : UIViewAnimationOptions(), animations: {
+            to.view.transform = CGAffineTransform.identity
+            from.view.transform = CGAffineTransform(translationX: -ceil(from.view.bounds.width * 0.3), y: 0)
         }) { _ in
-            from.view.transform = CGAffineTransformIdentity
+            from.view.transform = CGAffineTransform.identity
             // If cancel animation, recover the toViewController's position
-            to.view.transform = CGAffineTransformIdentity
-            transitionContext.completeTransition(!transitionContext.transitionWasCancelled())
+            to.view.transform = CGAffineTransform.identity
+            transitionContext.completeTransition(!transitionContext.transitionWasCancelled)
         }
     }
 }
 
 public final class DismissAnimator: NSObject, UIViewControllerAnimatedTransitioning {
-    public func transitionDuration(transitionContext: UIViewControllerContextTransitioning?) -> NSTimeInterval {
+    public func transitionDuration(using transitionContext: UIViewControllerContextTransitioning?) -> TimeInterval {
         return 0.3
     }
     
-    public func animateTransition(transitionContext: UIViewControllerContextTransitioning) {
-        guard let to = transitionContext.viewControllerForKey(UITransitionContextToViewControllerKey) else {
+    public func animateTransition(using transitionContext: UIViewControllerContextTransitioning) {
+        guard let to = transitionContext.viewController(forKey: UITransitionContextViewControllerKey.to) else {
             return transitionContext.completeTransition(false)
         }
-        guard let from = transitionContext.viewControllerForKey(UITransitionContextFromViewControllerKey) else {
+        guard let from = transitionContext.viewController(forKey: UITransitionContextViewControllerKey.from) else {
             return transitionContext.completeTransition(false)
         }
         
-        let container = transitionContext.containerView()
-        let finalFrame = transitionContext.finalFrameForViewController(to)
+        let container = transitionContext.containerView
+        let finalFrame = transitionContext.finalFrame(for: to)
         to.view.frame = finalFrame
         container.addSubview(to.view)
-        container.sendSubviewToBack(to.view)
+        container.sendSubview(toBack: to.view)
         
-        to.view.transform = CGAffineTransformMakeTranslation(-ceil(CGRectGetWidth(from.view.bounds) * 0.3), 0)
-        UIView.animateWithDuration(transitionDuration(transitionContext), delay: 0, options: paning ? .CurveLinear : .CurveEaseInOut, animations: {
-            from.view.transform = CGAffineTransformMakeTranslation(CGRectGetWidth(to.view.bounds), 0)
-            to.view.transform = CGAffineTransformIdentity
+        to.view.transform = CGAffineTransform(translationX: -ceil(from.view.bounds.width * 0.3), y: 0)
+        UIView.animate(withDuration: transitionDuration(using: transitionContext), delay: 0, options: paning ? .curveLinear : UIViewAnimationOptions(), animations: {
+            from.view.transform = CGAffineTransform(translationX: to.view.bounds.width, y: 0)
+            to.view.transform = CGAffineTransform.identity
         }) { _ in
-            from.view.transform = CGAffineTransformIdentity
+            from.view.transform = CGAffineTransform.identity
             // If cancel animation, recover the toViewController's position
-            to.view.transform = CGAffineTransformIdentity
-            transitionContext.completeTransition(!transitionContext.transitionWasCancelled())
+            to.view.transform = CGAffineTransform.identity
+            transitionContext.completeTransition(!transitionContext.transitionWasCancelled)
         }
     }
 }
 
 private extension UIView {
-    private func setLeftEdgeShadow() {
+    func setLeftEdgeShadow() {
         let path = UIBezierPath(rect: bounds)
-        layer.shadowPath = path.CGPath
-        layer.shadowOffset = CGSizeMake(-4.0, 68)
-        layer.shadowColor = UIColor.grayColor().CGColor
+        layer.shadowPath = path.cgPath
+        layer.shadowOffset = CGSize(width: -4.0, height: 68)
+        layer.shadowColor = UIColor.gray.cgColor
         layer.shadowRadius = 4.0
         layer.shadowOpacity = 0.4
     }
@@ -210,7 +210,7 @@ private extension UIView {
 // MARK: - UIGestureRecognizerDelegate
 
 extension HorizontalCoverTransitionModalNavigationController: UIGestureRecognizerDelegate {
-    public func gestureRecognizerShouldBegin(gestureRecognizer: UIGestureRecognizer) -> Bool {
+    public func gestureRecognizerShouldBegin(_ gestureRecognizer: UIGestureRecognizer) -> Bool {
         return gestureRecognizer == panGestureRecognizer
     }
 }
