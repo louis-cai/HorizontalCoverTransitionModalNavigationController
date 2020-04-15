@@ -81,11 +81,11 @@ public final class HorizontalCoverTransitionModalNavigationController: UINavigat
         }
     }
     
-    dynamic internal func back() {
+    @objc dynamic internal func back() {
         presentingViewController?.dismiss(animated: true, completion: nil)
     }
     
-    internal func handlePanAction(_ sender: UIPanGestureRecognizer) {
+    @objc internal func handlePanAction(_ sender: UIPanGestureRecognizer) {
         let state = sender.state
         if state == .began {
             paning = true
@@ -94,7 +94,7 @@ public final class HorizontalCoverTransitionModalNavigationController: UINavigat
                 back()
             }
         } else {
-            let percentComplete = fabs(sender.translation(in: view).x / view.bounds.width)
+            let percentComplete = abs(sender.translation(in: view).x / view.bounds.width)
             
             if state == .changed {
                 interactiveTransition?.update(percentComplete)
@@ -152,7 +152,7 @@ public final class PresentAnimator: NSObject, UIViewControllerAnimatedTransition
         container.addSubview(to.view)
         
         to.view.transform = CGAffineTransform(translationX: to.view.bounds.width, y: 0)
-        UIView.animate(withDuration: transitionDuration(using: transitionContext), delay: 0, options: paning ? .curveLinear : UIViewAnimationOptions(), animations: {
+        UIView.animate(withDuration: transitionDuration(using: transitionContext), delay: 0, options: paning ? .curveLinear : UIView.AnimationOptions(), animations: {
             to.view.transform = CGAffineTransform.identity
             from.view.transform = CGAffineTransform(translationX: -ceil(from.view.bounds.width * 0.3), y: 0)
         }) { _ in
@@ -181,10 +181,10 @@ public final class DismissAnimator: NSObject, UIViewControllerAnimatedTransition
         let finalFrame = transitionContext.finalFrame(for: to)
         to.view.frame = finalFrame
         container.addSubview(to.view)
-        container.sendSubview(toBack: to.view)
+        container.sendSubviewToBack(to.view)
         
         to.view.transform = CGAffineTransform(translationX: -ceil(from.view.bounds.width * 0.3), y: 0)
-        UIView.animate(withDuration: transitionDuration(using: transitionContext), delay: 0, options: paning ? .curveLinear : UIViewAnimationOptions(), animations: {
+        UIView.animate(withDuration: transitionDuration(using: transitionContext), delay: 0, options: paning ? .curveLinear : UIView.AnimationOptions(), animations: {
             from.view.transform = CGAffineTransform(translationX: to.view.bounds.width, y: 0)
             to.view.transform = CGAffineTransform.identity
         }) { _ in
